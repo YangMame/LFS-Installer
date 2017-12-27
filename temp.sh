@@ -470,6 +470,7 @@ main(){
             "进入临时系统")
                 color yellow "请输入root密码"
                 su - root -c "/mnt/lfs/sources/chroot.sh"
+            ;;
             "退出")
                 exit
             ;;

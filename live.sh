@@ -92,7 +92,7 @@ disk(){
     fdisk -l
     color green "是否调整分区?\ny) 是\nENTER) 否"
     read tmp
-    if [ "$tmp" == 1 ];then
+    if [ "$tmp" == y ];then
         color green "输入你想进行调整的磁盘,例:/dev/sda"
         read TMP
         cfdisk $TMP
@@ -101,7 +101,7 @@ disk(){
     read TMP
     color green "是否格式化?\ny) 是\nENTER) 否"
     read tmp
-    if [ "$tmp" == 1 ];then
+    if [ "$tmp" == y ];then
         color green "      选择你想使用的文件系统\n(需要系统有你所选择的文件系统工具)"
             select type in "ext4" "btrfs" "xfs" "jfs";do
                 umount $TMP > /dev/null
@@ -123,7 +123,7 @@ disk(){
 
 # 下载并校验源码
 sources(){
-    color green "如果下载很慢 请退出并编辑此脚本删除前面的注释修改为你自己的代理 回车以继续"
+    color green "如果下载很慢 请退出并编辑此脚本删除前面的注释修改为你自己的代理 回车以继续\n(如果有些东西下载失败 重试也无效,请打开下面的链接搜索下载到/mnt/lfs/sources目录)\nhttps://mirrors.ustc.edu.cn/gentoo/distfiles/\n假如这里也没有,请谷歌搜索下载"
     read
     cd $LFS/sources
     wget http://www.linuxfromscratch.org/lfs/view/stable-systemd/wget-list
@@ -146,7 +146,7 @@ adduser(){
 
 # 切换到lfs用户
 switch(){
-    wget https://github.com/YangMame/LFS-Installer/raw/master/tmp.sh -O $LFS/sources/temp.sh
+    wget https://github.com/YangMame/LFS-Installer/raw/master/temp.sh -O $LFS/sources/temp.sh
     wget https://github.com/YangMame/LFS-Installer/raw/master/chroot.sh -O $LFS/sources/chroot.sh
     chmod +x $LFS/sources/temp.sh
     chmod +x $LFS/sources/chroot.sh
