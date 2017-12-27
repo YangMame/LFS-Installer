@@ -248,7 +248,7 @@ temporary_system(){
         --disable-libgomp >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
-    ln -s gcc /tools/bin/cc
+    ln -s gcc /tools/bin/cc >> /tmp/lfs.log 2>&1
     clean gcc
 
     color blue '(8/32) 编译Tcl-core中                \r'
@@ -259,7 +259,7 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     chmod u+w /tools/lib/libtcl8.6.so
     make install-private-headers >> /tmp/lfs.log 2>&1
-    ln -s tclsh8.6 /tools/bin/tclsh
+    ln -s tclsh8.6 /tools/bin/tclsh >> /tmp/lfs.log 2>&1
     clean tcl
 
     color green '(9/32) 编译Expect中                \r'
@@ -304,7 +304,7 @@ temporary_system(){
     ./configure --prefix=/tools --without-bash-malloc >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
-    ln -s bash /tools/bin/sh
+    ln -s bash /tools/bin/sh >> /tmp/lfs.log 2>&1
     clean bash
 
     color blue '(14/32) 编译Bison中                \r'
