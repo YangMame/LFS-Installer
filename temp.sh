@@ -74,9 +74,10 @@ unpack(){
 
 temporary_system(){
 
+    source ~/.bashrc
     echo "LFS's log" > /tmp/lfs.log
     color red "另开终端运行tail -f /tmp/lfs.log查看编译输出\n"
-    color green '(1/32) 编译Binutils中\r'
+    color green '(1/32) 编译Binutils中                \r'
     unpack binutils
     mkdir build
     cd build
@@ -93,7 +94,7 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean binutils
 
-    color blue '(2/32) 编译GCC中\r'
+    color blue '(2/32) 编译GCC中                \r'
     unpack gcc
     tar -xf ../mpfr-3.1.5.tar.xz
     mv mpfr-3.1.5 mpfr
@@ -144,14 +145,14 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean gcc
 
-    color green '(3/32) 编译Linux中\r'
+    color green '(3/32) 编译Linux中                \r'
     unpack linux >> /tmp/lfs.log 2>&1
     make mrproper >> /tmp/lfs.log 2>&1
     make INSTALL_HDR_PATH=dest headers_install >> /tmp/lfs.log 2>&1
     cp -rv dest/include/* /tools/include >> /tmp/lfs.log 2>&1
     clean linux
 
-    color blue '(4/32) 编译Glibc中\r'
+    color blue '(4/32) 编译Glibc中                \r'
     unpack glibc
     mkdir build
     cd build
@@ -167,7 +168,7 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean glibc
 
-    color green '(5/32) 编译Libstdc++中\r'
+    color green '(5/32) 编译Libstdc++中                \r'
     unpack gcc
     mkdir build
     cd build
@@ -183,7 +184,7 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean gcc
 
-    color blue '(6/32) 编译Binutils中\r'
+    color blue '(6/32) 编译Binutils中                \r'
     unpack binutils
     mkdir build
     cd build
@@ -203,10 +204,9 @@ temporary_system(){
     cp -v ld/ld-new /tools/bin >> /tmp/lfs.log 2>&1
     clean binutils
 
-    color green '(7/32) 编译GCC中\r'
+    color green '(7/32) 编译GCC中                \r'
     unpack gcc
-    cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-    `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+    cat gcc/limitx.h gcc/glimits.h gcc/limity.h > `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
     for file in gcc/config/{linux,i386/linux{,64}}.h
     do
     cp -u $file{,.orig}
@@ -251,7 +251,7 @@ temporary_system(){
     ln -s gcc /tools/bin/cc
     clean gcc
 
-    color blue '(8/32) 编译Tcl-core中\r'
+    color blue '(8/32) 编译Tcl-core中                \r'
     unpack tcl-core
     cd unix
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
@@ -262,7 +262,7 @@ temporary_system(){
     ln -s tclsh8.6 /tools/bin/tclsh
     clean tcl-core
 
-    color green '(9/32) 编译Expect中\r'
+    color green '(9/32) 编译Expect中                \r'
     unpack expect
     cp -v configure{,.orig}
     sed 's:/usr/local/bin:/bin:' configure.orig > configure
@@ -273,20 +273,20 @@ temporary_system(){
     make SCRIPTS="" install >> /tmp/lfs.log 2>&1
     clean expect
 
-    color blue '(10/32) 编译DejaGNU中\r'
+    color blue '(10/32) 编译DejaGNU中                \r'
     unpack dejagnu
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean dejagnu
 
-    color green '(11/32) 编译Check中\r'
+    color green '(11/32) 编译Check中                \r'
     unpack check
     PKG_CONFIG= ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean check
 
-    color blue '(12/32) 编译Ncurses中\r'
+    color blue '(12/32) 编译Ncurses中                \r'
     unpack ncurses
     sed -i s/mawk// configure
     ./configure --prefix=/tools \
@@ -299,7 +299,7 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean ncurses
 
-    color green '(13/32) 编译Bash中\r'
+    color green '(13/32) 编译Bash中                \r'
     unpack bash
     ./configure --prefix=/tools --without-bash-malloc >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
@@ -307,54 +307,54 @@ temporary_system(){
     ln -s bash /tools/bin/sh
     clean bash
 
-    color blue '(14/32) 编译Bison中\r'
+    color blue '(14/32) 编译Bison中                \r'
     unpack bison
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
 
-    color green '(15/32) 编译Bzip2中\r'
+    color green '(15/32) 编译Bzip2中                \r'
     unpack bzip
     make >> /tmp/lfs.log 2>&1
     make PREFIX=/tools install >> /tmp/lfs.log 2>&1
     clean bzip
 
-    color blue '(16/32) 编译Coreutils中\r'
+    color blue '(16/32) 编译Coreutils中                \r'
     unpack coreutils
     ./configure --prefix=/tools --enable-install-program=hostname >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean coreutils
 
-    color green '(17/32) 编译Diffutils中\r'
+    color green '(17/32) 编译Diffutils中                \r'
     unpack diffutils
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean diffutils
 
-    color blue '(18/32) 编译File中\r'
+    color blue '(18/32) 编译File中                \r'
     unpack file
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean file
 
-    color green '(19/32) 编译Findutils中\r'
+    color green '(19/32) 编译Findutils中                \r'
     unpack findutils
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean findutils
 
-    color blue '(20/32) 编译Gawk中\r'
+    color blue '(20/32) 编译Gawk中                \r'
     unpack gawk
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean gawk
 
-    color green '(21/32) 编译Gettext中\r'
+    color green '(21/32) 编译Gettext中                \r'
     unpack gettext
     cd gettext-tools
     EMACS="no" ./configure --prefix=/tools --disable-shared >> /tmp/lfs.log 2>&1
@@ -366,7 +366,7 @@ temporary_system(){
     cp -f src/{msgfmt,msgmerge,xgettext} /tools/bin
     clean gettext
 
-    color blue '(22/32 编译Grep中\r'
+    color blue '(22/32 编译Grep中                \r'
     unpack grep
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
@@ -375,35 +375,35 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean grep
 
-    color green '(23/32) 编译Gzip中\r'
+    color green '(23/32) 编译Gzip中                \r'
     unpack gzip
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean gzip
 
-    color blue '(24/32) 编译M4中\r'
+    color blue '(24/32) 编译M4中                \r'
     unpack m4
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean m4
 
-    color green '(25/32) 编译Make中\r'
+    color green '(25/32) 编译Make中                \r'
     unpack make
     ./configure --prefix=/tools --without-guile >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean make
 
-    color blue '(26/32) 编译Patch中\r'
+    color blue '(26/32) 编译Patch中                \r'
     unpack patch
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean patch
 
-    color green '(27/32) 编译Perl中\r'
+    color green '(27/32) 编译Perl中                \r'
     unpack perl
     sed -e '9751 a#ifndef PERL_IN_XSUB_RE' \
         -e '9808 a#endif'                  \
@@ -415,27 +415,27 @@ temporary_system(){
     cp -R lib/* /tools/lib/perl5/5.26.0
     clean perl
 
-    color blue '(28/32) 编译Sed中\r'
+    color blue '(28/32) 编译Sed中                \r'
     unpack sed
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean sed
 
-    color green '(29/32) 编译Tar中\r'
+    color green '(29/32) 编译Tar中                \r'
     unpack tar
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
 
-    color blue '(30/32) 编译Texinfo中\r'
+    color blue '(30/32) 编译Texinfo中                \r'
     unpack texinfo
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean texinfo
 
-    color green '(31/32) 编译Util-linux中\r'
+    color green '(31/32) 编译Util-linux中                \r'
     unpack util-linux
     ./configure --prefix=/tools                \
             --without-python               \
@@ -447,7 +447,7 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean util-linux
 
-    color blue '(32/32) 编译Xz中\r'
+    color blue '(32/32) 编译Xz中                \r'
     unpack xz
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
@@ -458,7 +458,7 @@ temporary_system(){
 }
 
 main(){
-    color skyblue "输入1继续"
+    color red "输入1继续\n"
     select start in "设置环境变量" "构建临时系统" "进入临时系统" "退出";do
         case $start in
             "设置环境变量")

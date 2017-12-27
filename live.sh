@@ -146,8 +146,8 @@ adduser(){
 
 # 切换到lfs用户
 switch(){
-    wget https://github.com/YangMame/LFS-Installer/raw/master/temp.sh -O $LFS/sources/temp.sh
-    wget https://github.com/YangMame/LFS-Installer/raw/master/chroot.sh -O $LFS/sources/chroot.sh
+    wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/temp.sh -O $LFS/sources/temp.sh
+    wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/chroot.sh -O $LFS/sources/chroot.sh
     chmod +x $LFS/sources/temp.sh
     chmod +x $LFS/sources/chroot.sh
     su - lfs -c "/mnt/lfs/sources/temp.sh"
