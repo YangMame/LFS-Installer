@@ -139,8 +139,6 @@ adduser(){
     useradd -s /bin/bash -g lfs -m -k /dev/null lfs
     color yellow "设置lfs用户的密码"
     passwd lfs
-    chown lfs $LFS/tools
-    chown lfs $LFS/sources
     color yellow "如正常添加lfs用户 输入5开始切换用户进入下一阶段(输入4重试)"
 }
 
@@ -150,6 +148,8 @@ switch(){
     wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/chroot.sh -O $LFS/sources/chroot.sh
     chmod +x $LFS/sources/temp.sh
     chmod +x $LFS/sources/chroot.sh
+    chown lfs $LFS/tools
+    chown lfs $LFS/sources
     su - lfs -c "/mnt/lfs/sources/temp.sh"
 }
 

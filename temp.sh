@@ -252,7 +252,7 @@ temporary_system(){
     clean gcc
 
     color blue '(8/32) 编译Tcl-core中                \r'
-    unpack tcl-core
+    unpack tcl
     cd unix
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
@@ -260,7 +260,7 @@ temporary_system(){
     chmod u+w /tools/lib/libtcl8.6.so
     make install-private-headers >> /tmp/lfs.log 2>&1
     ln -s tclsh8.6 /tools/bin/tclsh
-    clean tcl-core
+    clean tcl
 
     color green '(9/32) 编译Expect中                \r'
     unpack expect
@@ -468,6 +468,9 @@ main(){
                 temporary_system
             ;;
             "进入临时系统")
+                strip --strip-debug /tools/lib/* >> /tmp/lfs.log 2>&1
+                /usr/bin/strip --strip-unneeded /tools/{,s}bin/* >> /tmp/lfs.log 2>&1
+                rm -rf /tools/{,share}/{info,man,doc}
                 color yellow "请输入root密码"
                 su - root -c "/mnt/lfs/sources/chroot.sh"
             ;;
