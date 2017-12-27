@@ -83,31 +83,39 @@ check(){
     fi
     unset AWK
 
-    color yellow "重要部分检查通过 输入2开始准备磁盘"
+    color yellow "重要部分检查通过 输入2开始准备分区"
 }
 
 # 准备磁盘
 disk(){
     mkdir -pv /mnt/lfs
     fdisk -l
-    color green "输入你想进行分区的磁盘,例:/dev/sda"
-    read TMP
-    cfdisk $TMP
+    color green "是否调整分区?\ny) 是\nENTER) 否"
+    read tmp
+    if [ "$tmp" == 1 ];then
+        color green "输入你想进行调整的磁盘,例:/dev/sda"
+        read TMP
+        cfdisk $TMP
+    fi
     color green "输入你的根目录分区,例如:/dev/sda2"
     read TMP
-    color green "      选择你想使用的文件系统\n(需要系统有你所选择的文件系统工具)"
-    select type in "ext4" "btrfs" "xfs" "jfs";do
-        umount $TMP > /dev/null
-        mkfs.$type $TMP -f
-        break
-    done
+    color green "是否格式化?\ny) 是\nENTER) 否"
+    read tmp
+    if [ "$tmp" == 1 ];then
+        color green "      选择你想使用的文件系统\n(需要系统有你所选择的文件系统工具)"
+            select type in "ext4" "btrfs" "xfs" "jfs";do
+                umount $TMP > /dev/null
+                mkfs.$type $TMP -f
+                break
+            done
+    fi
 
     mkdir -p /mnt/lfs
     mount $TMP /mnt/lfs
     mkdir -p $LFS/sources
     chmod a+wt $LFS/sources
 
-    mkdir $LFS/tools
+    mkdir -p $LFS/tools
     ln -vs $LFS/tools /
 
     color yellow "分区配置完成 输入3开始下载源码(输入2重试)"
@@ -138,20 +146,26 @@ adduser(){
 
 # 切换到lfs用户
 switch(){
-    wget https://github.com/YangMame/LFS-Installer/raw/master/tmp.sh -O /tmp/tmp.sh
-    chmod +x /tmp/tmp.sh
-    color yellow "请输入lfs用户的密码"
-    su - lfs -c "/tmp/tmp.sh"
+    wget https://github.com/YangMame/LFS-Installer/raw/master/tmp.sh -O $LFS/sources/temp.sh
+    wget https://github.com/YangMame/LFS-Installer/raw/master/chroot.sh -O $LFS/sources/chroot.sh
+    chmod +x $LFS/sources/temp.sh
+    chmod +x $LFS/sources/chroot.sh
+    su - lfs -c "/mnt/lfs/sources/temp.sh"
 }
 
 main(){
+    if [ `whoami` != root ];then
+        color red "请在root用户下运行"
+        exit
+    fi
+
     color red "请输入序号开始"
-    select start in "检查系统" "准备磁盘" "下载源码" "添加lfs用户" "切换用户进入下一阶段" "退出";do
+    select start in "检查系统" "准备分区" "下载源码" "添加lfs用户" "切换用户进入下一阶段" "退出";do
         case $start in
             "检查系统")
                 check
             ;;
-            "准备磁盘")
+            "准备分区")
                 disk
             ;;
             "下载源码")
