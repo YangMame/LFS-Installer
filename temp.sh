@@ -475,7 +475,7 @@ main(){
                 exit
             ;;
         esac
-    donw
+    done
 }
 
 main
