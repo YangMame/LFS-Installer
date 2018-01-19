@@ -32,7 +32,7 @@ color(){
 # 检查系统(直接搬运修改自LFS文档)
 
 check(){
-    if [ -x "$1" ];then
+    if [ ! -x $1 ];then
         color red "请安装$2"
         exit
     fi
@@ -43,7 +43,7 @@ CHECK(){
     check "/usr/bin/ld" "Binutils"
     check "/bin/bzip2" "Bzip2"
     check "/bin/chmod" "Coreutils"
-    check "/usr/bin/dif" "Diffutils"
+    check "/usr/bin/diff" "Diffutils"
     check "/usr/bin/find" "Findutils"
     check "/usr/bin/gawk" "Gawk"
     check "/usr/bin/gcc" "GCC"
