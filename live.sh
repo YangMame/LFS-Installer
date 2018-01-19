@@ -173,7 +173,7 @@ main(){
                 sources
             ;;
             "添加lfs用户")
-                adduser俄系统
+                adduser
             ;;
             "切换用户进入下一阶段")
                 switch
