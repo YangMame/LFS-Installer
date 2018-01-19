@@ -26,38 +26,39 @@ color(){
         white)
             echo -e "\033[37m$2\033[0m"
         ;;
-        black)
-            echo -e "\033[30m$2\033[0m"
-        ;;
-        blackwhite)
-            echo -e "\033[40;37m$2\033[0m"
-        ;;
-        redwhite)
-            echo -e "\033[41;37m$2\033[0m"
-        ;;
-        greenwhite)
-            echo -e "\033[42;37m$2\033[0m"
-        ;;
-        yellowwhite)
-            echo -e "\033[43;37m$2\033[0m"
-        ;;
-        bluewhite)
-            echo -e "\033[44;37m$2\033[0m"
-        ;;
-        purplewhite)
-            echo -e "\033[45;37m$2\033[0m"
-        ;;
-        skybluewhite)
-            echo -e "\033[46;37m$2\033[0m"
-        ;;
-        whiteblack)
-            echo -e "\033[47;30m$2\033[0m"
-        ;;
     esac
 }
 
 # 检查系统(直接搬运修改自LFS文档)
+
 check(){
+    if [ -x "$1" ];then
+        color red "请安装$2"
+        exit
+    fi
+}
+
+CHECK(){
+
+    check "/usr/bin/ld" "Binutils"
+    check "/bin/bzip2" "Bzip2"
+    check "/bin/chmod" "Coreutils"
+    check "/usr/bin/dif" "Diffutils"
+    check "/usr/bin/find" "Findutils"
+    check "/usr/bin/gawk" "Gawk"
+    check "/usr/bin/gcc" "GCC"
+    check "/usr/bin/ldd" "Glibc"
+    check "/bin/grep" "Grep"
+    check "/bin/gzip" "Gzip"
+    check "/usr/bin/m4" "M4"
+    check "/usr/bin/make" "Make"
+    check "/usr/bin/patch" "Patch"
+    check "/usr/bin/perl" "Perl"
+    check "/bin/sed" "Sed"
+    check "/bin/tar" "Tar"
+    check "/usr/bin/makeinfo" "Texinfo"
+    check "/usr/bin/xz" "XZ"
+
     SH=$(readlink -f /bin/sh)
     if [ "$SH" != "/bin/bash" ];then
         color red "请将/bin/sh链接到/bin/bash"
@@ -71,7 +72,7 @@ check(){
     elif [ "$YACC" = "/usr/bin/bison.yacc" ];then
         :
     else
-        color red "请将/usr/bin/yacc链接到bison"
+        color red "请安装将Bison或将/usr/bin/yacc链接到bison"
         exit
     fi
     unset YACC
@@ -83,7 +84,7 @@ check(){
     fi
     unset AWK
 
-    color yellow "重要部分检查通过 输入2开始准备分区"
+    color yellow "检查通过 输入2开始准备分区"
 }
 
 # 准备磁盘
@@ -145,7 +146,7 @@ adduser(){
 # 切换到lfs用户
 switch(){
     wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/temp.sh -O $LFS/sources/temp.sh
-    wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/chroot.sh -O $LFS/sources/chroot.sh
+    wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/prepare.sh -O $LFS/sources/prepare.sh
     chmod +x $LFS/sources/temp.sh
     chmod +x $LFS/sources/chroot.sh
     chown lfs $LFS/tools
@@ -163,7 +164,7 @@ main(){
     select start in "检查系统" "准备分区" "下载源码" "添加lfs用户" "切换用户进入下一阶段" "退出";do
         case $start in
             "检查系统")
-                check
+                CHECK
             ;;
             "准备分区")
                 disk
@@ -172,7 +173,7 @@ main(){
                 sources
             ;;
             "添加lfs用户")
-                adduser
+                adduser俄系统
             ;;
             "切换用户进入下一阶段")
                 switch

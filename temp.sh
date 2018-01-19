@@ -471,8 +471,17 @@ main(){
                 strip --strip-debug /tools/lib/* >> /tmp/lfs.log 2>&1
                 /usr/bin/strip --strip-unneeded /tools/{,s}bin/* >> /tmp/lfs.log 2>&1
                 rm -rf /tools/{,share}/{info,man,doc}
-                color yellow "请输入root密码"
-                su - root -c "/mnt/lfs/sources/chroot.sh"
+                color yellow "请输入root密码继续"
+                su - root -c "LFS=/mnt/lfs&\
+                chown -R root:root $LFS/tools&\
+                mkdir -pv $LFS/{dev,proc,sys,run}&\
+                mknod -m 600 $LFS/dev/console c 5 1&\
+                mknod -m 666 $LFS/dev/null c 1 3&\
+                mount -v --bind /dev $LFS/dev&\
+                mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620&\
+                mount -vt proc proc $LFS/proc&\
+                mount -vt sysfs sysfs $LFS/sys&\
+                mount -vt tmpfs tmpfs $LFS/run"
             ;;
             "退出")
                 exit
