@@ -127,11 +127,11 @@ sources(){
     color green "如果下载很慢 请退出并编辑此脚本删除前面的注释修改为你自己的代理 回车以继续\n(如果有些东西下载失败 重试也无效,请打开下面的链接搜索下载到/mnt/lfs/sources目录)\nhttps://mirrors.ustc.edu.cn/gentoo/distfiles/\n假如这里也没有,请谷歌搜索下载"
     read
     cd $LFS/sources
-    if [ !-f wget-list ];then
+    if [ ! -f wget-list ];then
     wget http://www.linuxfromscratch.org/lfs/view/8.2-systemd/wget-list
     fi
     wget --input-file=wget-list --continue --directory-prefix=$LFS/sources
-    if [ !-f md5sums ];then
+    if [ ! -f md5sums ];then
     wget http://www.linuxfromscratch.org/lfs/view/8.2-systemd/md5sums
     fi
     md5sum -c md5sums
@@ -149,10 +149,10 @@ adduser(){
 
 # 切换到lfs用户
 switch(){
-    if [ !-f temp.sh  ];then
+    if [ ! -f temp.sh ];then
     wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/temp.sh -O $LFS/sources/temp.sh
     fi
-    if [ !-f prepare.sh ];then
+    if [ ! -f prepare.sh ];then
     wget https://raw.githubusercontent.com/YangMame/LFS-Installer/master/prepare.sh -O $LFS/sources/prepare.sh
     fi
     chmod +x $LFS/sources/temp.sh
