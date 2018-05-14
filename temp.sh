@@ -96,12 +96,12 @@ temporary_system(){
 
     color blue '(2/32) 编译GCC中                \r'
     unpack gcc
-    tar -xf ../mpfr-3.1.5.tar.xz
-    mv mpfr-3.1.5 mpfr
-    tar -xf ../gmp-6.1.2.tar.xz
-    mv gmp-6.1.2 gmp
-    tar -xf ../mpc-1.0.3.tar.gz
-    mv mpc-1.0.3 mpc
+    tar -xf ../mpfr-*.tar.xz
+    mv `find ../ -name mpfr-* -type d` mpfr
+    tar -xf ../gmp-*.tar.xz
+    mv `find ../ -name gmp-* -type d` gmp
+    tar -xf ../mpc-*.tar.gz
+    mv `find ../ -name mpc-* -type d` mpc
     for file in gcc/config/{linux,i386/linux{,64}}.h;do
         cp -u $file{,.orig}
         sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' -e 's@/usr@/tools@g' $file.orig > $file
@@ -179,7 +179,7 @@ temporary_system(){
     --disable-nls                   \
     --disable-libstdcxx-threads     \
     --disable-libstdcxx-pch         \
-    --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/7.2.0 >> /tmp/lfs.log 2>&1
+    --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/`pwd | grep -o [1-9].*` >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean gcc
@@ -225,12 +225,12 @@ temporary_system(){
             -i.orig gcc/config/i386/t-linux64
     ;;
     esac
-    tar -xf ../mpfr-3.1.5.tar.xz
-    mv mpfr-3.1.5 mpfr
-    tar -xf ../gmp-6.1.2.tar.xz
-    mv gmp-6.1.2 gmp
-    tar -xf ../mpc-1.0.3.tar.gz
-    mv mpc-1.0.3 mpc
+    tar -xf ../mpfr-*.tar.xz
+    mv `find ../ -name mpfr-* -type d` mpfr
+    tar -xf ../gmp-*.tar.xz
+    mv `find ../ -name gmp-* -type d` gmp
+    tar -xf ../mpc-*.tar.gz
+    mv `find ../ -name mpc-* -type d` mpc
     mkdir build
     cd build
     CC=$LFS_TGT-gcc                                    \
@@ -279,12 +279,12 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean dejagnu
 
-    color green '(11/32) 编译Check中                \r'
-    unpack check
-    PKG_CONFIG= ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
+    color green '(11/32) 编译M4中                \r'
+    unpack m4
+    ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
-    clean check
+    clean m4
 
     color blue '(12/32) 编译Ncurses中                \r'
     unpack ncurses
@@ -312,6 +312,7 @@ temporary_system(){
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
+    clean bison
 
     color green '(15/32) 编译Bzip2中                \r'
     unpack bzip
@@ -382,60 +383,51 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean gzip
 
-    color blue '(24/32) 编译M4中                \r'
-    unpack m4
-    ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
-    make >> /tmp/lfs.log 2>&1
-    make install >> /tmp/lfs.log 2>&1
-    clean m4
-
-    color green '(25/32) 编译Make中                \r'
+    color blue '(25/32) 编译Make中                \r'
     unpack make
+    sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
     ./configure --prefix=/tools --without-guile >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean make
 
-    color blue '(26/32) 编译Patch中                \r'
+    color green '(26/32) 编译Patch中                \r'
     unpack patch
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean patch
 
-    color green '(27/32) 编译Perl中                \r'
+    color blue '(27/32) 编译Perl中                \r'
     unpack perl
-    sed -e '9751 a#ifndef PERL_IN_XSUB_RE' \
-        -e '9808 a#endif'                  \
-        -i regexec.c
     sh Configure -des -Dprefix=/tools -Dlibs=-lm >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     cp -f perl cpan/podlators/scripts/pod2man /tools/bin
-    mkdir -p /tools/lib/perl5/5.26.0
-    cp -R lib/* /tools/lib/perl5/5.26.0
+    mkdir -p /tools/lib/perl5/`pwd | grep -o [1-9].*`
+    cp -R lib/* /tools/lib/perl5/`pwd | grep -o [1-9].*`
     clean perl
 
-    color blue '(28/32) 编译Sed中                \r'
+    color green '(28/32) 编译Sed中                \r'
     unpack sed
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean sed
 
-    color green '(29/32) 编译Tar中                \r'
+    color blue '(29/32) 编译Tar中                \r'
     unpack tar
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
 
-    color blue '(30/32) 编译Texinfo中                \r'
+    color green '(30/32) 编译Texinfo中                \r'
     unpack texinfo
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
     make install >> /tmp/lfs.log 2>&1
     clean texinfo
 
-    color green '(31/32) 编译Util-linux中                \r'
+    color blue '(31/32) 编译Util-linux中                \r'
     unpack util-linux
     ./configure --prefix=/tools                \
             --without-python               \
@@ -447,7 +439,7 @@ temporary_system(){
     make install >> /tmp/lfs.log 2>&1
     clean util-linux
 
-    color blue '(32/32) 编译Xz中                \r'
+    color green '(32/32) 编译Xz中                \r'
     unpack xz
     ./configure --prefix=/tools >> /tmp/lfs.log 2>&1
     make >> /tmp/lfs.log 2>&1
