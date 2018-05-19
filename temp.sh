@@ -97,11 +97,11 @@ temporary_system(){
     color blue '(2/32) 编译GCC中                \r'
     unpack gcc
     tar -xf ../mpfr-*.tar.xz
-    mv `find ../ -name mpfr-* -type d` mpfr
+    mv mpfr-* mpfr
     tar -xf ../gmp-*.tar.xz
-    mv `find ../ -name gmp-* -type d` gmp
+    mv gmp-* gmp
     tar -xf ../mpc-*.tar.gz
-    mv `find ../ -name mpc-* -type d` mpc
+    mv mpc-* mpc
     for file in gcc/config/{linux,i386/linux{,64}}.h;do
         cp -u $file{,.orig}
         sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' -e 's@/usr@/tools@g' $file.orig > $file
@@ -226,11 +226,11 @@ temporary_system(){
     ;;
     esac
     tar -xf ../mpfr-*.tar.xz
-    mv `find ../ -name mpfr-* -type d` mpfr
+    mv mpfr-* mpfr
     tar -xf ../gmp-*.tar.xz
-    mv `find ../ -name gmp-* -type d` gmp
+    mv gmp-* gmp
     tar -xf ../mpc-*.tar.gz
-    mv `find ../ -name mpc-* -type d` mpc
+    mv mpc-* mpc
     mkdir build
     cd build
     CC=$LFS_TGT-gcc                                    \
